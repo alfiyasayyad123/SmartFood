@@ -1,6 +1,10 @@
 # SmartFood 🍔
 
-SmartFood is a full-stack food ordering web application built using Java Spring Boot and MySQL.
+SmartFood is a full-stack food ordering web application built using Java Spring Boot, Spring Security, JWT, Thymeleaf, and PostgreSQL.
+
+## 🚀 Live Demo
+
+🔗 **Live Project:** https://smartfood-5.onrender.com
 
 ## Features
 
@@ -26,6 +30,7 @@ SmartFood is a full-stack food ordering web application built using Java Spring 
 ## Technology Stack
 
 ### Backend
+
 - Java 17
 - Spring Boot 4
 - Spring Data JPA
@@ -34,25 +39,36 @@ SmartFood is a full-stack food ordering web application built using Java Spring 
 - Maven
 
 ### Frontend
+
 - HTML
 - CSS
 - JavaScript
 - Thymeleaf
 
 ### Database
-- MySQL 8
+
+- PostgreSQL
+
+### Deployment
+
+- Render
 
 ## Project Architecture
 
-```text
 Frontend
-    ↓
+↓
 HTML / CSS / JavaScript / Thymeleaf
-    ↓
+↓
 Spring Boot REST APIs
-    ↓
+↓
 Service Layer
-    ↓
+↓
 Repository Layer
-    ↓
-MySQL Database
+↓
+PostgreSQL Database
+
+## Author
+
+**Alfiya Sayyad**
+
+Java Backend & Full-Stack Developer

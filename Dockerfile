@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN ./mvnw clean package -DskipTests
+RUN sh mvnw clean package -DskipTests
 
 CMD ["sh", "-c", "java -Dserver.port=$PORT -jar target/SmartFood-Backend-0.0.1-SNAPSHOT.jar"]

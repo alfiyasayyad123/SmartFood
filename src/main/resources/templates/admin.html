@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartFood Admin Dashboard</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f6f8;
+            color: #222;
+        }
+
+        .navbar {
+            height: 70px;
+            background: #202124;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #ff4d2d;
+        }
+
+        .logout-btn {
+            border: none;
+            background: #ff4d2d;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 94%;
+            max-width: 1400px;
+            margin: 30px auto 60px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 32px;
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            color: #777;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 22px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.05);
+        }
+
+        .stat-label {
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.05);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .section-header h2 {
+            font-size: 22px;
+        }
+
+        .refresh-btn {
+            border: none;
+            background: #222;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* ================= FOOD FORM ================= */
+
+        .food-form {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .food-form h3 {
+            margin-bottom: 18px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            background: white;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #ff4d2d;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-actions {
+            margin-top: 18px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            border: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .primary-btn {
+            background: #ff4d2d;
+            color: white;
+        }
+
+        .secondary-btn {
+            background: #ddd;
+            color: #222;
+        }
+
+        /* ================= FOOD TABLE ================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        th,
+        td {
+            padding: 13px 11px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background: #fafafa;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .food-thumb {
+            width: 65px;
+            height: 55px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .food-name {
+            font-weight: bold;
+        }
+
+        .price {
+            font-weight: bold;
+        }
+
+        .available {
+            color: #159447;
+            font-weight: bold;
+        }
+
+        .unavailable {
+            color: #d33;
+            font-weight: bold;
+        }
+
+        .action-group {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .small-btn {
+            border: none;
+            padding: 7px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .edit-btn {
+            background: #222;
+            color: white;
+        }
+
+        .toggle-btn {
+            background: #fff0eb;
+            color: #ff4d2d;
+        }
+
+        .delete-btn {
+            background: #ffe8e8;
+            color: #c62828;
+        }
+
+        /* ================= ORDER TABLE ================= */
+
+        .order-table {
+            min-width: 1100px;
+        }
+
+        .order-number {
+            font-weight: 800;
+        }
+
+        .customer-name {
+            font-weight: bold;
+        }
+
+        .customer-email {
+            color: #777;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .order-items {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .order-amount {
+            font-weight: 800;
+        }
+
+        .status-select {
+            min-width: 155px;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+            padding: 40px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 15px;
+            background: #fff0eb;
+            color: #ff4d2d;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* ================= TOAST ================= */
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 25px;
+            transform: translateX(-50%) translateY(80px);
+            background: #222;
+            color: white;
+            padding: 13px 22px;
+            border-radius: 9px;
+            opacity: 0;
+            transition: .3s;
+            z-index: 9999;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 1100px) {
+
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+        }
+
+        @media(max-width: 800px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width: 500px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                width: 95%;
+            }
+
+            .section {
+                padding: 17px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        Smart<span>Food</span> Admin
+    </div>
+
+    <button
+            class="logout-btn"
+            onclick="logout()">
+        Logout
+    </button>
+
+</nav>
+
+
+<div class="container">
+
+    <!-- ================= HEADING ================= -->
+
+    <div class="page-heading">
+
+        <h1>
+            Admin Dashboard
+        </h1>
+
+        <p>
+            Manage food menu and customer orders
+        </p>
+
+    </div>
+
+
+    <!-- ================= STATS ================= -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Total Foods
+            </div>
+
+            <div
+                    class="stat-value"
+                    id="totalFoods">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Available Foods
+            </div>
+
+            <div
+                    class="stat-value"
+                    id="availableFoods">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Total Orders
+            </div>
+
+            <div
+                    class="stat-value"
+                    id="totalOrders">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Preparing
+            </div>
+
+            <div
+                    class="stat-value"
+                    id="preparingOrders">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Delivered
+            </div>
+
+            <div
+                    class="stat-value"
+                    id="deliveredOrders">
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOD MANAGEMENT
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <h2>
+                🍔 Food Management
+            </h2>
+
+            <button
+                    class="refresh-btn"
+                    onclick="loadFoods()">
+                Refresh Foods
+            </button>
+
+        </div>
+
+
+        <!-- ================= FORM ================= -->
+
+        <div class="food-form">
+
+            <h3 id="formTitle">
+                Add New Food
+            </h3>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Food Name
+                    </label>
+
+                    <input
+                            type="text"
+                            id="foodName"
+                            placeholder="Example: Paneer Pizza">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Price
+                    </label>
+
+                    <input
+                            type="number"
+                            id="foodPrice"
+                            placeholder="299">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Category
+                    </label>
+
+                    <select id="foodCategory">
+
+                        <option value="Pizza">
+                            Pizza
+                        </option>
+
+                        <option value="Burger">
+                            Burger
+                        </option>
+
+                        <option value="Sides">
+                            Sides
+                        </option>
+
+                        <option value="Pasta">
+                            Pasta
+                        </option>
+
+                        <option value="Dessert">
+                            Dessert
+                        </option>
+
+                        <option value="Drink">
+                            Drink
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Availability
+                    </label>
+
+                    <select id="foodAvailable">
+
+                        <option value="true">
+                            Available
+                        </option>
+
+                        <option value="false">
+                            Unavailable
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label>
+                        Image URL
+                    </label>
+
+                    <input
+                            type="text"
+                            id="foodImage"
+                            placeholder="https://...">
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label>
+                        Description
+                    </label>
+
+                    <textarea
+                            id="foodDescription"
+                            placeholder="Describe the food...">
+                    </textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                        class="primary-btn"
+                        id="saveFoodBtn"
+                        onclick="saveFood()">
+
+                    Add Food
+
+                </button>
+
+
+                <button
+                        class="secondary-btn"
+                        onclick="resetFoodForm()">
+
+                    Clear
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= FOOD TABLE ================= -->
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>
+                        ID
+                    </th>
+
+                    <th>
+                        Image
+                    </th>
+
+                    <th>
+                        Food
+                    </th>
+
+                    <th>
+                        Category
+                    </th>
+
+                    <th>
+                        Price
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Actions
+                    </th>
+
+                </tr>
+
+                </thead>
+
+                <tbody id="foodsTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ORDER MANAGEMENT
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <h2>
+                📦 Order Management
+            </h2>
+
+            <button
+                    class="refresh-btn"
+                    onclick="loadOrders()">
+                Refresh Orders
+            </button>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="order-table">
+
+                <thead>
+
+                <tr>
+
+                    <th>
+                        Order
+                    </th>
+
+                    <th>
+                        Customer
+                    </th>
+
+                    <th>
+                        Items
+                    </th>
+
+                    <th>
+                        Total
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Update
+                    </th>
+
+                </tr>
+
+                </thead>
+
+                <tbody id="ordersTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<div
+        class="toast"
+        id="toast">
+</div>
+
+
+<script>
+
+    /* =====================================================
+       CONFIG
+    ====================================================== */
+
+    const RESTAURANT_ID = 2;
+
+    let foods = [];
+    let orders = [];
+
+    let editingFoodId = null;
+
+
+    /* =====================================================
+       AUTH
+    ====================================================== */
+
+    function getToken() {
+
+        return localStorage.getItem(
+            "smartFoodToken"
+        );
+    }
+
+    function getRole() {
+
+        return localStorage.getItem(
+            "smartFoodRole"
+        );
+    }
+
+
+    /* =====================================================
+       LOGOUT
+    ====================================================== */
+
+    function logout() {
+
+        localStorage.removeItem(
+            "smartFoodToken"
+        );
+
+        localStorage.removeItem(
+            "smartFoodUserId"
+        );
+
+        localStorage.removeItem(
+            "smartFoodRole"
+        );
+
+        localStorage.removeItem(
+            "smartFoodUserName"
+        );
+
+        localStorage.removeItem(
+            "smartFoodUserEmail"
+        );
+
+        window.location.href =
+            "/login";
+    }
+
+
+    /* =====================================================
+       TOAST
+    ====================================================== */
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById("toast");
+
+        toast.innerText =
+            message;
+
+        toast.classList.add("show");
+
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        }, 2200);
+    }
+
+
+    /* =====================================================
+       AUTH CHECK
+    ====================================================== */
+
+    function checkAdmin() {
+
+        const token =
+            getToken();
+
+        const role =
+            getRole();
+
+        if (!token) {
+
+            window.location.href =
+                "/login";
+
+            return false;
+        }
+
+        if (role && role !== "ADMIN") {
+
+            alert(
+                "Admin access required."
+            );
+
+            window.location.href =
+                "/";
+
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /* =====================================================
+       LOAD FOODS
+    ====================================================== */
+
+    async function loadFoods() {
+
+        const token =
+            getToken();
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/foods",
+                    {
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token
+                        }
+                    }
+                );
+
+            if (
+                response.status === 401 ||
+                response.status === 403
+            ) {
+
+                logout();
+                return;
+            }
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to load foods"
+                );
+            }
+
+            const result =
+                await response.json();
+
+            foods =
+                result.data || [];
+
+            renderFoods();
+
+            updateFoodStats();
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast(
+                "Unable to load food menu"
+            );
+        }
+    }
+
+
+    /* =====================================================
+       FOOD TABLE
+    ====================================================== */
+
+    function renderFoods() {
+
+        const table =
+            document.getElementById(
+                "foodsTable"
+            );
+
+        table.innerHTML = "";
+
+        if (foods.length === 0) {
+
+            table.innerHTML = `
+                <tr>
+                    <td
+                        colspan="7"
+                        class="empty">
+                        No foods found.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        foods.forEach(food => {
+
+            const row =
+                document.createElement("tr");
+
+            const image =
+                food.imageUrl ||
+                "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80";
+
+            const available =
+                food.available === true;
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${food.id}
+                </td>
+
+                <td>
+                    <img
+                        class="food-thumb"
+                        src="${image}"
+                        alt="${food.name}">
+                </td>
+
+                <td>
+                    <div class="food-name">
+                        ${food.name}
+                    </div>
+
+                    <div style="
+                        color:#777;
+                        font-size:12px;
+                        margin-top:4px;">
+                        ${
+                food.description ||
+                ""
+            }
+                    </div>
+                </td>
+
+                <td>
+                    ${food.category || "-"}
+                </td>
+
+                <td class="price">
+                    ₹${Number(food.price || 0)}
+                </td>
+
+                <td>
+
+                    ${
+                available
+
+                    ? `<span class="available">
+                                Available
+                               </span>`
+
+                    : `<span class="unavailable">
+                                Unavailable
+                               </span>`
+            }
+
+                </td>
+
+                <td>
+
+                    <div class="action-group">
+
+                        <button
+                            class="small-btn edit-btn"
+                            onclick="editFood(${food.id})">
+                            Edit
+                        </button>
+
+                        <button
+                            class="small-btn toggle-btn"
+                            onclick="toggleFood(${food.id})">
+
+                            ${
+                available
+                    ? "Disable"
+                    : "Enable"
+            }
+
+                        </button>
+
+                        <button
+                            class="small-btn delete-btn"
+                            onclick="deleteFood(${food.id})">
+                            Delete
+                        </button>
+
+                    </div>
+
+                </td>
+            `;
+
+            table.appendChild(row);
+
+        });
+    }
+
+
+    /* =====================================================
+       FOOD STATS
+    ====================================================== */
+
+    function updateFoodStats() {
+
+        document.getElementById(
+            "totalFoods"
+        ).innerText =
+            foods.length;
+
+        document.getElementById(
+            "availableFoods"
+        ).innerText =
+            foods.filter(
+                food =>
+                    food.available === true
+            ).length;
+    }
+
+
+    /* =====================================================
+       SAVE FOOD
+    ====================================================== */
+
+    async function saveFood() {
+
+        const token =
+            getToken();
+
+        const name =
+            document.getElementById(
+                "foodName"
+            ).value.trim();
+
+        const price =
+            Number(
+                document.getElementById(
+                    "foodPrice"
+                ).value
+            );
+
+        const category =
+            document.getElementById(
+                "foodCategory"
+            ).value;
+
+        const description =
+            document.getElementById(
+                "foodDescription"
+            ).value.trim();
+
+        const imageUrl =
+            document.getElementById(
+                "foodImage"
+            ).value.trim();
+
+        const available =
+            document.getElementById(
+                "foodAvailable"
+            ).value === "true";
+
+
+        if (!name) {
+
+            showToast(
+                "Enter food name"
+            );
+
+            return;
+        }
+
+        if (!price || price <= 0) {
+
+            showToast(
+                "Enter valid price"
+            );
+
+            return;
+        }
+
+
+        try {
+
+            let response;
+
+            /* =========================
+               EDIT
+            ========================= */
+
+            if (editingFoodId) {
+
+                response =
+                    await fetch(
+                        `/api/foods/${editingFoodId}`,
+                        {
+                            method: "PUT",
+                            headers: {
+                                "Authorization":
+                                    "Bearer " + token,
+
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body:
+                                JSON.stringify({
+
+                                    id:
+                                    editingFoodId,
+
+                                    name:
+                                    name,
+
+                                    description:
+                                    description,
+
+                                    price:
+                                    price,
+
+                                    category:
+                                    category,
+
+                                    imageUrl:
+                                    imageUrl,
+
+                                    available:
+                                    available,
+
+                                    restaurant: {
+                                        id:
+                                        RESTAURANT_ID
+                                    }
+                                })
+                        }
+                    );
+
+            }
+
+            /* =========================
+               ADD
+            ========================= */
+
+            else {
+
+                response =
+                    await fetch(
+                        `/api/foods/restaurant/${RESTAURANT_ID}`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Authorization":
+                                    "Bearer " + token,
+
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body:
+                                JSON.stringify({
+
+                                    name:
+                                    name,
+
+                                    description:
+                                    description,
+
+                                    price:
+                                    price,
+
+                                    category:
+                                    category,
+
+                                    imageUrl:
+                                    imageUrl,
+
+                                    available:
+                                    available
+                                })
+                        }
+                    );
+            }
+
+
+            const result =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
+                throw new Error(
+                    result.message ||
+                    "Food operation failed"
+                );
+            }
+
+
+            showToast(
+                editingFoodId
+                    ? "Food updated successfully"
+                    : "Food added successfully"
+            );
+
+
+            resetFoodForm();
+
+            await loadFoods();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast(
+                error.message ||
+                "Food operation failed"
+            );
+        }
+    }
+
+
+    /* =====================================================
+       EDIT FOOD
+    ====================================================== */
+
+    function editFood(foodId) {
+
+        const food =
+            foods.find(
+                item =>
+                    item.id === foodId
+            );
+
+        if (!food) {
+            return;
+        }
+
+        editingFoodId =
+            foodId;
+
+        document.getElementById(
+            "formTitle"
+        ).innerText =
+            "Edit Food";
+
+        document.getElementById(
+            "saveFoodBtn"
+        ).innerText =
+            "Update Food";
+
+
+        document.getElementById(
+            "foodName"
+        ).value =
+            food.name || "";
+
+
+        document.getElementById(
+            "foodPrice"
+        ).value =
+            food.price || "";
+
+
+        document.getElementById(
+            "foodCategory"
+        ).value =
+            food.category || "Pizza";
+
+
+        document.getElementById(
+            "foodDescription"
+        ).value =
+            food.description || "";
+
+
+        document.getElementById(
+            "foodImage"
+        ).value =
+            food.imageUrl || "";
+
+
+        document.getElementById(
+            "foodAvailable"
+        ).value =
+            food.available
+                ? "true"
+                : "false";
+
+
+        document.querySelector(
+            ".food-form"
+        ).scrollIntoView({
+            behavior: "smooth"
+        });
+    }
+
+
+    /* =====================================================
+       RESET FORM
+    ====================================================== */
+
+    function resetFoodForm() {
+
+        editingFoodId =
+            null;
+
+        document.getElementById(
+            "formTitle"
+        ).innerText =
+            "Add New Food";
+
+        document.getElementById(
+            "saveFoodBtn"
+        ).innerText =
+            "Add Food";
+
+        document.getElementById(
+            "foodName"
+        ).value = "";
+
+        document.getElementById(
+            "foodPrice"
+        ).value = "";
+
+        document.getElementById(
+            "foodDescription"
+        ).value = "";
+
+        document.getElementById(
+            "foodImage"
+        ).value = "";
+
+        document.getElementById(
+            "foodCategory"
+        ).value = "Pizza";
+
+        document.getElementById(
+            "foodAvailable"
+        ).value = "true";
+    }
+
+
+    /* =====================================================
+       TOGGLE FOOD
+    ====================================================== */
+
+    async function toggleFood(foodId) {
+
+        const token =
+            getToken();
+
+        const food =
+            foods.find(
+                item =>
+                    item.id === foodId
+            );
+
+        if (!food) {
+            return;
+        }
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/foods/${foodId}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token,
+
+                            "Content-Type":
+                                "application/json"
+                        },
+                        body:
+                            JSON.stringify({
+
+                                id:
+                                food.id,
+
+                                name:
+                                food.name,
+
+                                description:
+                                food.description,
+
+                                price:
+                                food.price,
+
+                                category:
+                                food.category,
+
+                                imageUrl:
+                                food.imageUrl,
+
+                                available:
+                                    !food.available,
+
+                                restaurant: {
+                                    id:
+                                    RESTAURANT_ID
+                                }
+
+                            })
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
+                throw new Error(
+                    result.message ||
+                    "Unable to change status"
+                );
+            }
+
+
+            showToast(
+                food.available
+                    ? "Food disabled"
+                    : "Food enabled"
+            );
+
+            await loadFoods();
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast(
+                error.message ||
+                "Unable to update food"
+            );
+        }
+    }
+
+
+    /* =====================================================
+       DELETE FOOD
+    ====================================================== */
+
+    async function deleteFood(foodId) {
+
+        const food =
+            foods.find(
+                item =>
+                    item.id === foodId
+            );
+
+        if (!food) {
+            return;
+        }
+
+
+        const confirmed =
+            confirm(
+                `Delete "${food.name}"?`
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        const token =
+            getToken();
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/foods/${foodId}`,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token
+                        }
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
+                throw new Error(
+                    result.message ||
+                    "Delete failed"
+                );
+            }
+
+
+            showToast(
+                "Food deleted successfully"
+            );
+
+            await loadFoods();
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast(
+                error.message ||
+                "Could not delete food"
+            );
+        }
+    }
+
+
+    /* =====================================================
+       LOAD ORDERS
+    ====================================================== */
+
+    async function loadOrders() {
+
+        const token =
+            getToken();
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/orders",
+                    {
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token
+                        }
+                    }
+                );
+
+
+            if (
+                response.status === 401 ||
+                response.status === 403
+            ) {
+
+                logout();
+                return;
+            }
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to load orders"
+                );
+            }
+
+
+            const result =
+                await response.json();
+
+            orders =
+                result.data || [];
+
+            renderOrders();
+
+            updateOrderStats();
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast(
+                "Unable to load orders"
+            );
+        }
+    }
+
+
+    /* =====================================================
+       RENDER ORDERS
+    ====================================================== */
+
+    function renderOrders() {
+
+        const table =
+            document.getElementById(
+                "ordersTable"
+            );
+
+        table.innerHTML = "";
+
+
+        if (orders.length === 0) {
+
+            table.innerHTML = `
+                <tr>
+                    <td
+                        colspan="6"
+                        class="empty">
+                        No orders found.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        orders.forEach(order => {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const items =
+                order.items || [];
+
+
+            const itemText =
+                items.map(
+                    item => {
+
+                        const name =
+                            item.food?.name ||
+                            "Food";
+
+                        const qty =
+                            item.quantity ||
+                            1;
+
+                        return `
+                            ${name} × ${qty}
+                        `;
+                    }
+                ).join("<br>");
+
+
+            const status =
+                order.status ||
+                "PLACED";
+
+
+            row.innerHTML = `
+
+                <td>
+
+                    <div
+                        class="order-number">
+                        #${order.id}
+                    </div>
+
+                    <div
+                        style="
+                        font-size:12px;
+                        color:#777;
+                        margin-top:5px;">
+                        ${order.orderDate || ""}
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <div
+                        class="customer-name">
+                        ${
+                order.user?.fullName ||
+                "Customer"
+            }
+                    </div>
+
+                    <div
+                        class="customer-email">
+                        ${
+                order.user?.email ||
+                ""
+            }
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <div
+                        class="order-items">
+
+                        ${
+                itemText ||
+                "No items"
+            }
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <div
+                        class="order-amount">
+
+                        ₹${
+                Number(
+                    order.totalAmount ||
+                    0
+                )
+            }
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <span class="badge">
+
+                        ${
+                status.replaceAll(
+                    "_",
+                    " "
+                )
+            }
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <select
+                        class="status-select"
+                        id="orderStatus-${order.id}">
+
+                        ${createStatusOptions(
+                status
+            )}
+
+                    </select>
+
+                    <button
+                        class="small-btn edit-btn"
+                        style="margin-top:7px;"
+                        onclick="updateOrderStatus(${order.id})">
+
+                        Update
+
+                    </button>
+
+                </td>
+
+            `;
+
+            table.appendChild(row);
+        });
+    }
+
+
+    /* =====================================================
+       STATUS OPTIONS
+    ====================================================== */
+
+    function createStatusOptions(
+        currentStatus
+    ) {
+
+        const statuses = [
+
+            "PLACED",
+
+            "CONFIRMED",
+
+            "PREPARING",
+
+            "OUT_FOR_DELIVERY",
+
+            "DELIVERED",
+
+            "CANCELLED"
+
+        ];
+
+
+        return statuses.map(
+            status => {
+
+                return `
+                    <option
+                        value="${status}"
+                        ${
+                    status ===
+                    currentStatus
+                        ? "selected"
+                        : ""
+                }>
+
+                        ${
+                    status.replaceAll(
+                        "_",
+                        " "
+                    )
+                }
+
+                    </option>
+                `;
+
+            }
+        ).join("");
+    }
+
+
+    /* =====================================================
+       UPDATE ORDER STATUS
+    ====================================================== */
+
+    async function updateOrderStatus(
+        orderId
+    ) {
+
+        const token =
+            getToken();
+
+        const select =
+            document.getElementById(
+                `orderStatus-${orderId}`
+            );
+
+        const status =
+            select.value;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/orders/${orderId}/status?status=${encodeURIComponent(status)}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token
+                        }
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !result.success
+            ) {
+
+                throw new Error(
+                    result.message ||
+                    "Status update failed"
+                );
+            }
+
+
+            showToast(
+                "Order status updated"
+            );
+
+            await loadOrders();
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast(
+                error.message ||
+                "Unable to update order"
+            );
+        }
+    }
+
+
+    /* =====================================================
+       ORDER STATS
+    ====================================================== */
+
+    function updateOrderStats() {
+
+        document.getElementById(
+            "totalOrders"
+        ).innerText =
+            orders.length;
+
+
+        document.getElementById(
+            "preparingOrders"
+        ).innerText =
+            orders.filter(
+                order =>
+                    order.status ===
+                    "PREPARING"
+            ).length;
+
+
+        document.getElementById(
+            "deliveredOrders"
+        ).innerText =
+            orders.filter(
+                order =>
+                    order.status ===
+                    "DELIVERED"
+            ).length;
+    }
+
+
+    /* =====================================================
+       START
+    ====================================================== */
+
+    async function initialize() {
+
+        if (!checkAdmin()) {
+            return;
+        }
+
+        await loadFoods();
+
+        await loadOrders();
+    }
+
+    initialize();
+
+</script>
+
+</body>
+</html>

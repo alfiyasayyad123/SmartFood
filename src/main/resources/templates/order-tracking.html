@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Track Order | SmartFood</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f7f8fa;
+            color: #222;
+        }
+
+        .navbar {
+            height: 70px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            box-shadow: 0 2px 12px rgba(0,0,0,.08);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: #ff4d2d;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: #222;
+        }
+
+        .home-btn {
+            border: none;
+            background: #ff4d2d;
+            color: white;
+            padding: 11px 20px;
+            border-radius: 9px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 900px;
+            margin: 45px auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.07);
+            margin-bottom: 22px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .order-id {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .status-badge {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 30px;
+            padding: 9px 18px;
+            border-radius: 25px;
+            background: #fff1eb;
+            color: #ff4d2d;
+            font-weight: bold;
+        }
+
+        .tracking {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 35px 10px;
+        }
+
+        .tracking::before {
+            content: "";
+            position: absolute;
+            top: 21px;
+            left: 35px;
+            right: 35px;
+            height: 4px;
+            background: #ddd;
+            z-index: 0;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            width: 20%;
+        }
+
+        .circle {
+            width: 45px;
+            height: 45px;
+            margin: 0 auto 10px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .step.active .circle {
+            background: #ff4d2d;
+        }
+
+        .step.completed .circle {
+            background: #159447;
+        }
+
+        .step span {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .step.active span,
+        .step.completed span {
+            color: #222;
+            font-weight: bold;
+        }
+
+        .items h2 {
+            margin-bottom: 15px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 13px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            font-weight: bold;
+        }
+
+        .item-qty {
+            color: #777;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .price {
+            font-weight: bold;
+        }
+
+        .summary {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 18px;
+            margin-top: 15px;
+            border-top: 2px dashed #ddd;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .address {
+            background: #fff8f5;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .address h3 {
+            margin-bottom: 8px;
+        }
+
+        .address p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .error {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .error button {
+            margin-top: 20px;
+            border: none;
+            background: #ff4d2d;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        @media(max-width: 700px) {
+
+            .tracking::before {
+                display: none;
+            }
+
+            .tracking {
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            .step {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                text-align: left;
+            }
+
+            .circle {
+                margin: 0;
+                flex-shrink: 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo" onclick="goHome()">
+        Smart<span>Food</span>
+    </div>
+
+    <button class="home-btn"
+            onclick="goHome()">
+        Home
+    </button>
+
+</nav>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Track Your Order</h1>
+
+        <p class="subtitle">
+            Follow your food from restaurant to doorstep
+        </p>
+
+        <div class="order-id" id="orderId">
+            Order #
+        </div>
+
+        <div class="status-badge"
+             id="statusBadge">
+            Loading...
+        </div>
+
+        <div class="tracking">
+
+            <div class="step" id="stepPlaced">
+                <div class="circle">1</div>
+                <span>Placed</span>
+            </div>
+
+            <div class="step" id="stepConfirmed">
+                <div class="circle">2</div>
+                <span>Confirmed</span>
+            </div>
+
+            <div class="step" id="stepPreparing">
+                <div class="circle">3</div>
+                <span>Preparing</span>
+            </div>
+
+            <div class="step" id="stepDelivery">
+                <div class="circle">4</div>
+                <span>Out for Delivery</span>
+            </div>
+
+            <div class="step" id="stepDelivered">
+                <div class="circle">5</div>
+                <span>Delivered</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card items">
+
+        <h2>Order Details</h2>
+
+        <div id="itemsList"></div>
+
+        <div class="summary">
+            <span>Total</span>
+            <span id="total">₹0</span>
+        </div>
+
+        <div class="address">
+
+            <h3>Delivery Address</h3>
+
+            <p id="address">
+                -
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    const orderSteps = [
+        "PLACED",
+        "CONFIRMED",
+        "PREPARING",
+        "OUT_FOR_DELIVERY",
+        "DELIVERED"
+    ];
+
+    function goHome() {
+        window.location.href = "/";
+    }
+
+    function getToken() {
+        return localStorage.getItem("smartFoodToken");
+    }
+
+    function getOrderId() {
+
+        const saved =
+            localStorage.getItem("smartFoodLastOrder");
+
+        if (!saved) {
+            return null;
+        }
+
+        try {
+
+            const order =
+                JSON.parse(saved);
+
+            return order.backendOrderId ||
+                order.orderId ||
+                null;
+
+        } catch (error) {
+
+            return null;
+        }
+    }
+
+    function normalizeStatus(status) {
+
+        if (!status) {
+            return "PLACED";
+        }
+
+        return status.toUpperCase();
+    }
+
+    function updateTracking(status) {
+
+        const current =
+            normalizeStatus(status);
+
+        document.getElementById("statusBadge")
+            .innerText =
+            current.replaceAll("_", " ");
+
+        if (current === "CANCELLED") {
+
+            document.querySelectorAll(".step")
+                .forEach(step => {
+                    step.classList.remove(
+                        "active",
+                        "completed"
+                    );
+                });
+
+            return;
+        }
+
+        const currentIndex =
+            orderSteps.indexOf(current);
+
+        document.querySelectorAll(".step")
+            .forEach(step => {
+
+                step.classList.remove(
+                    "active",
+                    "completed"
+                );
+
+            });
+
+        const ids = [
+            "stepPlaced",
+            "stepConfirmed",
+            "stepPreparing",
+            "stepDelivery",
+            "stepDelivered"
+        ];
+
+        ids.forEach((id, index) => {
+
+            const element =
+                document.getElementById(id);
+
+            if (index < currentIndex) {
+                element.classList.add("completed");
+            }
+
+            if (index === currentIndex) {
+                element.classList.add("active");
+            }
+
+        });
+
+    }
+
+    function renderOrder(order) {
+
+        document.getElementById("orderId")
+            .innerText =
+            "Order #" + order.id;
+
+        updateTracking(order.status);
+
+        document.getElementById("total")
+            .innerText =
+            "₹" + Number(order.totalAmount || 0);
+
+        const itemsList =
+            document.getElementById("itemsList");
+
+        itemsList.innerHTML = "";
+
+        const items =
+            order.items || [];
+
+        items.forEach(item => {
+
+            const foodName =
+                item.food?.name || "Food Item";
+
+            const quantity =
+                item.quantity || 1;
+
+            const itemPrice =
+                Number(item.price || 0);
+
+            const row =
+                document.createElement("div");
+
+            row.className = "item";
+
+            row.innerHTML = `
+                <div>
+                    <div class="item-name">
+                        ${foodName}
+                    </div>
+
+                    <div class="item-qty">
+                        Quantity: ${quantity}
+                    </div>
+                </div>
+
+                <div class="price">
+                    ₹${itemPrice * quantity}
+                </div>
+            `;
+
+            itemsList.appendChild(row);
+
+        });
+
+        const user =
+            order.user || {};
+
+        document.getElementById("address")
+            .innerText =
+            user.fullName
+                ? "Order placed by " + user.fullName
+                : "Delivery information available in checkout.";
+    }
+
+    async function loadOrder() {
+
+        const token = getToken();
+        const orderId = getOrderId();
+
+        if (!token || !orderId) {
+            alert("No recent order found.");
+            goHome();
+            return;
+        }
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/orders/${orderId}`,
+                    {
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token
+                        }
+                    }
+                );
+
+            if (!response.ok) {
+                throw new Error(
+                    "Could not fetch order"
+                );
+            }
+
+            const result =
+                await response.json();
+
+            if (!result.success) {
+                throw new Error(
+                    result.message ||
+                    "Order unavailable"
+                );
+            }
+
+            renderOrder(result.data);
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to load order details."
+            );
+        }
+    }
+
+    loadOrder();
+
+</script>
+
+</body>
+</html>

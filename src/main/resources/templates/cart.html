@@ -1,0 +1,2154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cart & Checkout | SmartFood</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f7f7f7;
+            color: #222;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 72px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff4d2d;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: #222;
+        }
+
+        .back-btn {
+            border: none;
+            background: #f5f5f5;
+            padding: 10px 17px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #ffe9e3;
+            color: #ff4d2d;
+        }
+
+        /* ================= PAGE ================= */
+
+        .page {
+            width: 88%;
+            max-width: 1200px;
+            margin: 35px auto;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+            margin-bottom: 7px;
+        }
+
+        .page-title p {
+            color: #777;
+        }
+
+        /* ================= LAYOUT ================= */
+
+        .checkout-layout {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        /* ================= CARD ================= */
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 22px;
+            border: 1px solid #eee;
+        }
+
+        .card h2 {
+            font-size: 21px;
+            margin-bottom: 20px;
+        }
+
+        /* ================= CART ITEMS ================= */
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 18px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item img {
+            width: 90px;
+            height: 90px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: #eee;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-info h3 {
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+        .item-price {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .item-actions {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-top: 12px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 17px;
+        }
+
+        .quantity-btn:hover {
+            background: #fff0ec;
+            border-color: #ff4d2d;
+            color: #ff4d2d;
+        }
+
+        .quantity {
+            min-width: 25px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .item-total {
+            font-weight: bold;
+            font-size: 17px;
+            white-space: nowrap;
+        }
+
+        .remove-btn {
+            border: none;
+            background: transparent;
+            color: #e53935;
+            cursor: pointer;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        /* ================= EMPTY CART ================= */
+
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-cart-icon {
+            font-size: 70px;
+            margin-bottom: 15px;
+        }
+
+        .empty-cart h2 {
+            margin-bottom: 10px;
+        }
+
+        .empty-cart p {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .browse-btn {
+            border: none;
+            background: #ff4d2d;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* ================= ADDRESS ================= */
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 9px;
+            padding: 12px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            height: 90px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #ff4d2d;
+        }
+
+        .delivery-info {
+            background: #f8fff9;
+            border: 1px solid #d8f0df;
+            padding: 13px;
+            border-radius: 10px;
+            color: #277a40;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        /* ================= PAYMENT ================= */
+
+        .payment-option {
+            border: 1px solid #ddd;
+            border-radius: 11px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .payment-option:hover {
+            border-color: #ff4d2d;
+            background: #fff9f7;
+        }
+
+        .payment-option.selected {
+            border-color: #ff4d2d;
+            background: #fff5f1;
+        }
+
+        .payment-option input {
+            accent-color: #ff4d2d;
+        }
+
+        .payment-icon {
+            font-size: 25px;
+        }
+
+        .payment-info strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .payment-info span {
+            color: #777;
+            font-size: 12px;
+        }
+
+        /* ================= SUMMARY ================= */
+
+        .summary-card {
+            position: sticky;
+            top: 95px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 13px 0;
+            color: #555;
+        }
+
+        .summary-row.total {
+            border-top: 1px solid #eee;
+            padding-top: 17px;
+            margin-top: 18px;
+            color: #222;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .free {
+            color: #159447;
+            font-weight: bold;
+        }
+
+        .place-order-btn {
+            width: 100%;
+            border: none;
+            background: #ff4d2d;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 18px;
+        }
+
+        .place-order-btn:hover {
+            background: #e63f22;
+        }
+
+        .place-order-btn:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+        .secure-text {
+            text-align: center;
+            color: #777;
+            font-size: 12px;
+            margin-top: 13px;
+        }
+
+        /* ================= MESSAGE ================= */
+
+        .message {
+            display: none;
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .message.error {
+            background: #fff0f0;
+            color: #d93025;
+        }
+
+        .message.success {
+            background: #effbf3;
+            color: #168447;
+        }
+
+        /* ================= LOADING ================= */
+
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: #777;
+        }
+
+        /* ================= TOAST ================= */
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 25px;
+            transform: translateX(-50%) translateY(100px);
+            background: #222;
+            color: white;
+            padding: 13px 22px;
+            border-radius: 10px;
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 5000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 900px) {
+
+            .checkout-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-card {
+                position: static;
+            }
+        }
+
+        @media(max-width: 600px) {
+
+            .navbar {
+                padding: 0 4%;
+            }
+
+            .page {
+                width: 94%;
+            }
+
+            .page-title h1 {
+                font-size: 27px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .cart-item img {
+                width: 70px;
+                height: 70px;
+            }
+
+            .item-total {
+                font-size: 14px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div
+            class="logo"
+            onclick="goHome()">
+
+        Smart<span>Food</span>
+
+    </div>
+
+
+    <button
+            class="back-btn"
+            onclick="goRestaurant()">
+
+        ← Back to Restaurant
+
+    </button>
+
+</nav>
+
+
+<!-- ================= PAGE ================= -->
+
+<div class="page">
+
+
+    <div class="page-title">
+
+        <h1>🛒 Your Cart</h1>
+
+        <p>
+            Review your items and complete your order.
+        </p>
+
+    </div>
+
+
+    <!-- MESSAGE -->
+
+    <div
+            id="message"
+            class="message">
+    </div>
+
+
+    <div class="checkout-layout">
+
+
+        <!-- ================= LEFT ================= -->
+
+        <div>
+
+
+            <!-- CART -->
+
+            <div class="card">
+
+                <h2>
+                    Your Items
+                </h2>
+
+                <div id="cartItems">
+
+                    <div class="loading">
+                        Loading cart...
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ADDRESS -->
+
+            <div class="card">
+
+                <h2>
+                    📍 Delivery Address
+                </h2>
+
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Full Name
+                        </label>
+
+                        <input
+                                type="text"
+                                id="fullName"
+                                placeholder="Enter your full name">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Mobile Number
+                        </label>
+
+                        <input
+                                type="tel"
+                                id="mobile"
+                                placeholder="10-digit mobile number"
+                                maxlength="10">
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Complete Address
+                        </label>
+
+                        <textarea
+                                id="address"
+                                placeholder="House / Flat No., Street, Area"></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            City
+                        </label>
+
+                        <input
+                                type="text"
+                                id="city"
+                                placeholder="Enter city">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Pincode
+                        </label>
+
+                        <input
+                                type="text"
+                                id="pincode"
+                                placeholder="6-digit pincode"
+                                maxlength="6">
+
+                    </div>
+
+                </div>
+
+
+                <div class="delivery-info">
+
+                    🚴 Estimated delivery:
+                    <strong>25–35 minutes</strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- PAYMENT -->
+
+            <div class="card">
+
+                <h2>
+                    💳 Payment Method
+                </h2>
+
+
+                <label
+                        class="payment-option selected"
+                        onclick="selectPayment(this)">
+
+                    <input
+                            type="radio"
+                            name="payment"
+                            value="COD"
+                            checked>
+
+                    <span class="payment-icon">
+                        💵
+                    </span>
+
+                    <span class="payment-info">
+
+                        <strong>
+                            Cash on Delivery
+                        </strong>
+
+                        <span>
+                            Pay when your order arrives
+                        </span>
+
+                    </span>
+
+                </label>
+
+
+                <label
+                        class="payment-option"
+                        onclick="selectPayment(this)">
+
+                    <input
+                            type="radio"
+                            name="payment"
+                            value="UPI">
+
+                    <span class="payment-icon">
+                        📱
+                    </span>
+
+                    <span class="payment-info">
+
+                        <strong>
+                            UPI
+                        </strong>
+
+                        <span>
+                            Google Pay, PhonePe, Paytm etc.
+                        </span>
+
+                    </span>
+
+                </label>
+
+
+                <label
+                        class="payment-option"
+                        onclick="selectPayment(this)">
+
+                    <input
+                            type="radio"
+                            name="payment"
+                            value="CARD">
+
+                    <span class="payment-icon">
+                        💳
+                    </span>
+
+                    <span class="payment-info">
+
+                        <strong>
+                            Credit / Debit Card
+                        </strong>
+
+                        <span>
+                            Secure card payment
+                        </span>
+
+                    </span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= RIGHT ================= -->
+
+        <div>
+
+            <div class="card summary-card">
+
+                <h2>
+                    Order Summary
+                </h2>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Item Total
+                    </span>
+
+                    <strong id="subtotal">
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Delivery Fee
+                    </span>
+
+                    <strong id="deliveryFee">
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Taxes & Charges
+                    </span>
+
+                    <strong id="tax">
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row total">
+
+                    <span>
+                        Grand Total
+                    </span>
+
+                    <strong id="grandTotal">
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <button
+                        class="place-order-btn"
+                        id="placeOrderBtn"
+                        onclick="placeOrder()"
+                        disabled>
+
+                    Place Order
+
+                </button>
+
+
+                <div class="secure-text">
+
+                    🔒 Your information is secure
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+        class="toast"
+        id="toast">
+</div>
+
+
+<script>
+
+    /* =====================================================
+       GLOBAL DATA
+    ====================================================== */
+
+    let cart = [];
+
+    let placingOrder = false;
+
+
+    /* =====================================================
+       AUTH
+    ====================================================== */
+
+    function getToken() {
+
+        return localStorage.getItem(
+            "smartFoodToken"
+        );
+    }
+
+
+    function getUserId() {
+
+        return localStorage.getItem(
+            "smartFoodUserId"
+        );
+    }
+
+
+    /* =====================================================
+       FORMAT PRICE
+    ====================================================== */
+
+    function formatPrice(value) {
+
+        return "₹" +
+            Number(value || 0)
+                .toLocaleString("en-IN");
+    }
+
+
+    /* =====================================================
+       MESSAGE
+    ====================================================== */
+
+    function showMessage(message, type) {
+
+        const element =
+            document.getElementById("message");
+
+        element.innerText = message;
+
+        element.className =
+            "message " + type;
+
+        element.style.display =
+            "block";
+    }
+
+
+    function hideMessage() {
+
+        const element =
+            document.getElementById("message");
+
+        element.style.display =
+            "none";
+    }
+
+
+    /* =====================================================
+       TOAST
+    ====================================================== */
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById("toast");
+
+        toast.innerText =
+            message;
+
+        toast.classList.add(
+            "show"
+        );
+
+        setTimeout(function() {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        }, 2200);
+    }
+
+
+    /* =====================================================
+       LOAD BACKEND CART
+    ====================================================== */
+
+    async function loadCart() {
+
+        hideMessage();
+
+
+        const token =
+            getToken();
+
+        const userId =
+            getUserId();
+
+
+        if (!token || !userId) {
+
+            window.location.href =
+                "/login";
+
+            return;
+        }
+
+
+        const container =
+            document.getElementById(
+                "cartItems"
+            );
+
+
+        container.innerHTML = `
+            <div class="loading">
+                Loading cart...
+            </div>
+        `;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/cart/${userId}`,
+                    {
+                        method: "GET",
+
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token,
+
+                            "Content-Type":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            /* ================================
+               AUTH ERROR
+            ================================= */
+
+            if (
+                response.status === 401 ||
+                response.status === 403
+            ) {
+
+                localStorage.removeItem(
+                    "smartFoodToken"
+                );
+
+                localStorage.removeItem(
+                    "smartFoodUserId"
+                );
+
+                window.location.href =
+                    "/login";
+
+                return;
+            }
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load cart. Status: " +
+                    response.status
+                );
+            }
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "Backend cart:",
+                result
+            );
+
+
+            if (
+                !result.success ||
+                !Array.isArray(result.data)
+            ) {
+
+                throw new Error(
+                    result.message ||
+                    "Unable to load cart"
+                );
+            }
+
+
+            /*
+             * Convert backend Cart objects
+             * into frontend display objects.
+             */
+
+            cart =
+                result.data.map(function(
+                    cartItem
+                ) {
+
+                    const food =
+                        cartItem.food || {};
+
+                    return {
+
+                        cartId:
+                        cartItem.id,
+
+                        foodId:
+                        food.id,
+
+                        name:
+                            food.name ||
+                            "Food Item",
+
+                        price:
+                            Number(
+                                food.price || 0
+                            ),
+
+                        quantity:
+                            Number(
+                                cartItem.quantity || 1
+                            ),
+
+                        category:
+                            food.category ||
+                            "Food",
+
+                        image:
+                            food.imageUrl ||
+                            "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=300&q=80"
+
+                    };
+
+                });
+
+
+            /*
+             * Keep local cart synchronized
+             * only for UI continuity.
+             */
+
+            localStorage.setItem(
+                "smartFoodCart",
+                JSON.stringify(cart)
+            );
+
+
+            renderCart();
+
+        } catch (error) {
+
+            console.error(
+                "Cart loading error:",
+                error
+            );
+
+            container.innerHTML = `
+                <div class="loading">
+                    Unable to load cart.
+                </div>
+            `;
+
+            showMessage(
+                error.message ||
+                "Unable to load cart.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       RENDER CART
+    ====================================================== */
+
+    function renderCart() {
+
+        const container =
+            document.getElementById(
+                "cartItems"
+            );
+
+        const placeOrderButton =
+            document.getElementById(
+                "placeOrderBtn"
+            );
+
+
+        if (cart.length === 0) {
+
+            container.innerHTML = `
+
+                <div class="empty-cart">
+
+                    <div class="empty-cart-icon">
+                        🛒
+                    </div>
+
+                    <h2>
+                        Your cart is empty
+                    </h2>
+
+                    <p>
+                        Add some delicious food
+                        before checkout.
+                    </p>
+
+                    <button
+                            class="browse-btn"
+                            onclick="goRestaurant()">
+
+                        Browse Food
+
+                    </button>
+
+                </div>
+
+            `;
+
+
+            placeOrderButton.disabled =
+                true;
+
+            updateSummary();
+
+            return;
+        }
+
+
+        placeOrderButton.disabled =
+            placingOrder;
+
+
+        container.innerHTML = "";
+
+
+        cart.forEach(function(item) {
+
+            const itemTotal =
+                item.price *
+                item.quantity;
+
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "cart-item";
+
+
+            div.innerHTML = `
+
+                <img
+                        src="${item.image}"
+                        alt="${escapeHtml(item.name)}"
+                        onerror="
+                            this.src='https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=300&q=80';
+                        ">
+
+
+                <div class="item-info">
+
+                    <h3>
+                        ${escapeHtml(item.name)}
+                    </h3>
+
+                    <div class="item-price">
+
+                        ${formatPrice(item.price)}
+                        per item
+
+                    </div>
+
+
+                    <div class="item-actions">
+
+                        <button
+                                class="quantity-btn"
+                                onclick="
+                                    changeQuantity(
+                                        ${item.cartId},
+                                        ${item.quantity - 1}
+                                    )
+                                ">
+
+                            −
+
+                        </button>
+
+
+                        <span class="quantity">
+
+                            ${item.quantity}
+
+                        </span>
+
+
+                        <button
+                                class="quantity-btn"
+                                onclick="
+                                    changeQuantity(
+                                        ${item.cartId},
+                                        ${item.quantity + 1}
+                                    )
+                                ">
+
+                            +
+
+                        </button>
+
+                    </div>
+
+
+                    <button
+                            class="remove-btn"
+                            onclick="
+                                removeItem(
+                                    ${item.cartId}
+                                )
+                            ">
+
+                        Remove
+
+                    </button>
+
+                </div>
+
+
+                <div class="item-total">
+
+                    ${formatPrice(itemTotal)}
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                div
+            );
+
+        });
+
+
+        updateSummary();
+
+    }
+
+
+    /* =====================================================
+       ESCAPE HTML
+    ====================================================== */
+
+    function escapeHtml(value) {
+
+        return String(value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    /* =====================================================
+       SUBTOTAL
+    ====================================================== */
+
+    function getSubtotal() {
+
+        return cart.reduce(
+            function(total, item) {
+
+                return total +
+                    (
+                        item.price *
+                        item.quantity
+                    );
+
+            },
+            0
+        );
+    }
+
+
+    /* =====================================================
+       SUMMARY
+    ====================================================== */
+
+    function updateSummary() {
+
+        const subtotal =
+            getSubtotal();
+
+
+        const delivery =
+            subtotal === 0
+                ? 0
+                : subtotal >= 299
+                    ? 0
+                    : 30;
+
+
+        const tax =
+            Math.round(
+                subtotal * 0.05
+            );
+
+
+        const grandTotal =
+            subtotal +
+            delivery +
+            tax;
+
+
+        document.getElementById(
+            "subtotal"
+        ).innerText =
+            formatPrice(subtotal);
+
+
+        const deliveryElement =
+            document.getElementById(
+                "deliveryFee"
+            );
+
+
+        if (
+            delivery === 0 &&
+            subtotal > 0
+        ) {
+
+            deliveryElement.innerText =
+                "FREE";
+
+            deliveryElement.classList.add(
+                "free"
+            );
+
+        } else {
+
+            deliveryElement.innerText =
+                formatPrice(
+                    delivery
+                );
+
+            deliveryElement.classList.remove(
+                "free"
+            );
+
+        }
+
+
+        document.getElementById(
+            "tax"
+        ).innerText =
+            formatPrice(tax);
+
+
+        document.getElementById(
+            "grandTotal"
+        ).innerText =
+            formatPrice(
+                grandTotal
+            );
+
+    }
+
+
+    /* =====================================================
+       CHANGE QUANTITY
+    ====================================================== */
+
+    async function changeQuantity(
+        cartId,
+        newQuantity
+    ) {
+
+        const token =
+            getToken();
+
+
+        if (!token) {
+
+            window.location.href =
+                "/login";
+
+            return;
+        }
+
+
+        try {
+
+            if (newQuantity <= 0) {
+
+                await removeItem(
+                    cartId
+                );
+
+                return;
+            }
+
+
+            const response =
+                await fetch(
+                    `/api/cart/${cartId}?quantity=${newQuantity}`,
+                    {
+
+                        method: "PUT",
+
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token,
+
+                            "Content-Type":
+                                "application/json"
+                        }
+
+                    }
+                );
+
+
+            if (
+                response.status === 401 ||
+                response.status === 403
+            ) {
+
+                forceLogin();
+
+                return;
+            }
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Quantity update failed."
+                );
+            }
+
+
+            await loadCart();
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+            showToast(
+                "Unable to update quantity"
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       REMOVE ITEM
+    ====================================================== */
+
+    async function removeItem(cartId) {
+
+        const token =
+            getToken();
+
+
+        if (!token) {
+
+            window.location.href =
+                "/login";
+
+            return;
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/cart/${cartId}`,
+                    {
+
+                        method: "DELETE",
+
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token,
+
+                            "Content-Type":
+                                "application/json"
+                        }
+
+                    }
+                );
+
+
+            if (
+                response.status === 401 ||
+                response.status === 403
+            ) {
+
+                forceLogin();
+
+                return;
+            }
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Remove item failed."
+                );
+            }
+
+
+            showToast(
+                "Item removed from cart"
+            );
+
+
+            await loadCart();
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+            showToast(
+                "Unable to remove item"
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       PAYMENT
+    ====================================================== */
+
+    function selectPayment(element) {
+
+        document
+            .querySelectorAll(
+                ".payment-option"
+            )
+            .forEach(function(option) {
+
+                option.classList.remove(
+                    "selected"
+                );
+
+            });
+
+
+        element.classList.add(
+            "selected"
+        );
+
+    }
+
+
+    /* =====================================================
+       ADDRESS VALIDATION
+    ====================================================== */
+
+    function validateAddress() {
+
+        const fullName =
+            document.getElementById(
+                "fullName"
+            ).value.trim();
+
+
+        const mobile =
+            document.getElementById(
+                "mobile"
+            ).value.trim();
+
+
+        const address =
+            document.getElementById(
+                "address"
+            ).value.trim();
+
+
+        const city =
+            document.getElementById(
+                "city"
+            ).value.trim();
+
+
+        const pincode =
+            document.getElementById(
+                "pincode"
+            ).value.trim();
+
+
+        if (!fullName) {
+
+            showToast(
+                "Please enter your name"
+            );
+
+            return false;
+        }
+
+
+        if (
+            !/^[0-9]{10}$/.test(
+                mobile
+            )
+        ) {
+
+            showToast(
+                "Enter a valid 10-digit mobile number"
+            );
+
+            return false;
+        }
+
+
+        if (!address) {
+
+            showToast(
+                "Please enter your delivery address"
+            );
+
+            return false;
+        }
+
+
+        if (!city) {
+
+            showToast(
+                "Please enter your city"
+            );
+
+            return false;
+        }
+
+
+        if (
+            !/^[0-9]{6}$/.test(
+                pincode
+            )
+        ) {
+
+            showToast(
+                "Enter a valid 6-digit pincode"
+            );
+
+            return false;
+        }
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       PLACE REAL BACKEND ORDER
+    ====================================================== */
+
+    async function placeOrder() {
+
+        if (placingOrder) {
+            return;
+        }
+
+
+        if (cart.length === 0) {
+
+            showToast(
+                "Your cart is empty"
+            );
+
+            return;
+        }
+
+
+        if (!validateAddress()) {
+            return;
+        }
+
+
+        const token =
+            getToken();
+
+
+        const userId =
+            getUserId();
+
+
+        if (!token || !userId) {
+
+            forceLogin();
+
+            return;
+        }
+
+
+        const paymentElement =
+            document.querySelector(
+                'input[name="payment"]:checked'
+            );
+
+
+        if (!paymentElement) {
+
+            showToast(
+                "Please select a payment method"
+            );
+
+            return;
+        }
+
+
+        const paymentMethod =
+            paymentElement.value;
+
+
+        const subtotal =
+            getSubtotal();
+
+
+        const deliveryFee =
+            subtotal >= 299
+                ? 0
+                : 30;
+
+
+        const tax =
+            Math.round(
+                subtotal * 0.05
+            );
+
+
+        const grandTotal =
+            subtotal +
+            deliveryFee +
+            tax;
+
+
+        const button =
+            document.getElementById(
+                "placeOrderBtn"
+            );
+
+
+        placingOrder = true;
+
+        button.disabled = true;
+
+        button.innerText =
+            "Placing Order...";
+
+
+        hideMessage();
+
+
+        try {
+
+            /*
+             * REAL API CALL
+             *
+             * Backend creates:
+             * orders
+             * order_items
+             *
+             * and clears backend cart.
+             */
+
+            const response =
+                await fetch(
+                    `/api/orders/place/${userId}`,
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token,
+
+                            "Content-Type":
+                                "application/json"
+                        }
+
+                    }
+                );
+
+
+            /* ================================
+               AUTH ERROR
+            ================================= */
+
+            if (
+                response.status === 401 ||
+                response.status === 403
+            ) {
+
+                forceLogin();
+
+                return;
+            }
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "Place order response:",
+                result
+            );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.message ||
+                    "Order placement failed."
+                );
+            }
+
+
+            if (
+                !result.success ||
+                !result.data
+            ) {
+
+                throw new Error(
+                    result.message ||
+                    "Order could not be created."
+                );
+            }
+
+
+            /*
+             * ACTUAL BACKEND ORDER
+             */
+
+            const backendOrder =
+                result.data;
+
+
+            const backendOrderId =
+                backendOrder.id;
+
+
+            const backendStatus =
+                backendOrder.status ||
+                "PLACED";
+
+
+            /*
+             * Save confirmation snapshot.
+             *
+             * The actual order is already
+             * stored in MySQL.
+             */
+
+            const savedOrder = {
+
+                orderId:
+                backendOrderId,
+
+                backendOrderId:
+                backendOrderId,
+
+                status:
+                backendStatus,
+
+                backendTotal:
+                    Number(
+                        backendOrder.totalAmount || 0
+                    ),
+
+                items:
+                    cart.map(function(item) {
+
+                        return {
+
+                            name:
+                            item.name,
+
+                            price:
+                            item.price,
+
+                            quantity:
+                            item.quantity,
+
+                            category:
+                            item.category,
+
+                            image:
+                            item.image,
+
+                            foodId:
+                            item.foodId,
+
+                            cartId:
+                            item.cartId
+
+                        };
+
+                    }),
+
+                subtotal:
+                subtotal,
+
+                deliveryFee:
+                deliveryFee,
+
+                tax:
+                tax,
+
+                grandTotal:
+                grandTotal,
+
+                customer: {
+
+                    fullName:
+                        document.getElementById(
+                            "fullName"
+                        ).value.trim(),
+
+                    mobile:
+                        document.getElementById(
+                            "mobile"
+                        ).value.trim(),
+
+                    address:
+                        document.getElementById(
+                            "address"
+                        ).value.trim(),
+
+                    city:
+                        document.getElementById(
+                            "city"
+                        ).value.trim(),
+
+                    pincode:
+                        document.getElementById(
+                            "pincode"
+                        ).value.trim()
+
+                },
+
+                paymentMethod:
+                paymentMethod,
+
+                orderDate:
+                    backendOrder.orderDate ||
+                    new Date().toISOString()
+
+            };
+
+
+            /*
+             * Store backend order ID for
+             * confirmation/tracking pages.
+             */
+
+            localStorage.setItem(
+                "smartFoodLastOrder",
+                JSON.stringify(
+                    savedOrder
+                )
+            );
+
+
+            localStorage.setItem(
+                "smartFoodTrackingOrderId",
+                backendOrderId
+            );
+
+
+            /*
+             * Backend OrderService already
+             * clears the database cart.
+             */
+
+            localStorage.removeItem(
+                "smartFoodCart"
+            );
+
+
+            /*
+             * Open confirmation page.
+             */
+
+            window.location.href =
+                "/order-confirmation";
+
+
+        } catch (error) {
+
+            console.error(
+                "Place order error:",
+                error
+            );
+
+
+            showMessage(
+                error.message ||
+                "Unable to place order.",
+                "error"
+            );
+
+
+            button.disabled =
+                false;
+
+            button.innerText =
+                "Place Order";
+
+            placingOrder =
+                false;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       FORCE LOGIN
+    ====================================================== */
+
+    function forceLogin() {
+
+        localStorage.removeItem(
+            "smartFoodToken"
+        );
+
+        localStorage.removeItem(
+            "smartFoodUserId"
+        );
+
+        localStorage.removeItem(
+            "smartFoodUserRole"
+        );
+
+        window.location.href =
+            "/login";
+    }
+
+
+    /* =====================================================
+       NAVIGATION
+    ====================================================== */
+
+    function goHome() {
+
+        window.location.href =
+            "/home";
+    }
+
+
+    function goRestaurant() {
+
+        window.location.href =
+            "/restaurant";
+    }
+
+
+    /* =====================================================
+       PAGE LOAD
+    ====================================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            loadCart();
+
+        }
+    );
+
+</script>
+
+</body>
+
+</html>

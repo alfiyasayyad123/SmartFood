@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0">
+
+    <title>Login | SmartFood</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                    linear-gradient(
+                            rgba(0, 0, 0, 0.45),
+                            rgba(0, 0, 0, 0.45)
+                    ),
+                    url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600&q=80");
+
+            background-size: cover;
+
+            background-position: center;
+
+        }
+
+
+        /* ================= LOGIN CONTAINER ================= */
+
+        .login-container {
+
+            width: 900px;
+
+            max-width: 95%;
+
+            min-height: 550px;
+
+            display: flex;
+
+            border-radius: 25px;
+
+            overflow: hidden;
+
+            background: rgba(255, 255, 255, 0.96);
+
+            box-shadow:
+                    0 20px 60px rgba(0, 0, 0, 0.35);
+
+        }
+
+
+        /* ================= LEFT SIDE ================= */
+
+        .left-section {
+
+            width: 50%;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #ff4d2d,
+                            #ff7a18
+                    );
+
+            color: white;
+
+            padding: 55px 45px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+
+        .left-section::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 280px;
+
+            height: 280px;
+
+            border-radius: 50%;
+
+            background:
+                    rgba(255, 255, 255, 0.08);
+
+            top: -100px;
+
+            right: -100px;
+
+        }
+
+
+        .left-section::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+
+            height: 220px;
+
+            border-radius: 50%;
+
+            background:
+                    rgba(255, 255, 255, 0.07);
+
+            bottom: -100px;
+
+            left: -80px;
+
+        }
+
+
+        .logo {
+
+            font-size: 32px;
+
+            font-weight: 800;
+
+            margin-bottom: 30px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .logo span {
+
+            color: #fff3d6;
+
+        }
+
+
+        .left-section h1 {
+
+            font-size: 42px;
+
+            line-height: 1.15;
+
+            margin-bottom: 20px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .left-section p {
+
+            font-size: 16px;
+
+            line-height: 1.7;
+
+            opacity: 0.95;
+
+            max-width: 350px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .food-icons {
+
+            display: flex;
+
+            gap: 18px;
+
+            margin-top: 35px;
+
+            font-size: 38px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        /* ================= RIGHT SIDE ================= */
+
+        .right-section {
+
+            width: 50%;
+
+            padding: 55px 50px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+        }
+
+
+        .right-section h2 {
+
+            font-size: 32px;
+
+            color: #222;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .subtitle {
+
+            color: #777;
+
+            margin-bottom: 32px;
+
+            font-size: 14px;
+
+        }
+
+
+        /* ================= INPUT ================= */
+
+        .input-group {
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .input-group label {
+
+            display: block;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            color: #333;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .input-box {
+
+            width: 100%;
+
+            height: 50px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 10px;
+
+            padding: 0 15px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition: 0.3s;
+
+        }
+
+
+        .input-box:focus {
+
+            border-color: #ff5a36;
+
+            box-shadow:
+                    0 0 0 3px
+                    rgba(255, 90, 54, 0.1);
+
+        }
+
+
+        /* ================= LOGIN BUTTON ================= */
+
+        .login-button {
+
+            width: 100%;
+
+            height: 52px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #ff4d2d,
+                            #ff7a18
+                    );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            margin-top: 5px;
+
+            transition: 0.3s;
+
+        }
+
+
+        .login-button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                    0 8px 20px
+                    rgba(255, 77, 45, 0.3);
+
+        }
+
+
+        .login-button:disabled {
+
+            opacity: 0.7;
+
+            cursor: not-allowed;
+
+            transform: none;
+
+        }
+
+
+        /* ================= MESSAGE ================= */
+
+        .message {
+
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            text-align: center;
+
+        }
+
+
+        .message.error {
+
+            display: block;
+
+            background: #ffe5e5;
+
+            color: #d60000;
+
+        }
+
+
+        .message.success {
+
+            display: block;
+
+            background: #e5f8eb;
+
+            color: #16803c;
+
+        }
+
+
+        /* ================= REGISTER ================= */
+
+        .register-text {
+
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #777;
+
+            font-size: 14px;
+
+        }
+
+
+        .register-text a {
+
+            color: #ff4d2d;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+        }
+
+
+        .register-text a:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+        /* ================= BACK HOME ================= */
+
+        .back-home {
+
+            text-align: center;
+
+            margin-top: 18px;
+
+        }
+
+
+        .back-home a {
+
+            color: #555;
+
+            font-size: 13px;
+
+            text-decoration: none;
+
+        }
+
+
+        .back-home a:hover {
+
+            color: #ff4d2d;
+
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 750px) {
+
+            .login-container {
+
+                flex-direction: column;
+
+                min-height: auto;
+
+            }
+
+
+            .left-section,
+
+            .right-section {
+
+                width: 100%;
+
+            }
+
+
+            .left-section {
+
+                padding: 35px 30px;
+
+            }
+
+
+            .left-section h1 {
+
+                font-size: 32px;
+
+            }
+
+
+            .food-icons {
+
+                margin-top: 20px;
+
+            }
+
+
+            .right-section {
+
+                padding: 40px 30px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+
+    <!-- ================= LEFT SIDE ================= -->
+
+    <div class="left-section">
+
+
+        <div class="logo">
+
+            🍴 Smart<span>Food</span>
+
+        </div>
+
+
+        <h1>
+
+            Delicious food.<br>
+
+            Delivered smart.
+
+        </h1>
+
+
+        <p>
+
+            Order your favourite food from the best restaurants
+            around you and enjoy a fast, simple and smart
+            food delivery experience.
+
+        </p>
+
+
+        <div class="food-icons">
+
+            🍕 🍔 🍜 🍰
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= RIGHT SIDE ================= -->
+
+    <div class="right-section">
+
+
+        <h2>
+
+            Welcome Back 👋
+
+        </h2>
+
+
+        <p class="subtitle">
+
+            Login to continue using SmartFood
+
+        </p>
+
+
+
+        <!-- ================= LOGIN FORM ================= -->
+
+        <form id="loginForm">
+
+
+            <div class="input-group">
+
+
+                <label for="email">
+
+                    Email Address
+
+                </label>
+
+
+                <input
+                        type="email"
+                        id="email"
+                        class="input-box"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                >
+
+
+            </div>
+
+
+
+            <div class="input-group">
+
+
+                <label for="password">
+
+                    Password
+
+                </label>
+
+
+                <input
+                        type="password"
+                        id="password"
+                        class="input-box"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                >
+
+
+            </div>
+
+
+
+            <button
+                    type="submit"
+                    class="login-button"
+                    id="loginButton">
+
+                Login
+
+            </button>
+
+
+        </form>
+
+
+
+        <!-- ================= MESSAGE ================= -->
+
+        <div
+                id="message"
+                class="message">
+
+        </div>
+
+
+
+        <!-- ================= REGISTER ================= -->
+
+        <div class="register-text">
+
+            Don't have an account?
+
+            <a href="/register">
+
+                Create Account
+
+            </a>
+
+        </div>
+
+
+
+        <!-- ================= BACK HOME ================= -->
+
+        <div class="back-home">
+
+            <a href="/home">
+
+                ← Back to Home
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+    /* ================= ELEMENTS ================= */
+
+    const loginForm =
+        document.getElementById(
+            "loginForm"
+        );
+
+
+    const loginButton =
+        document.getElementById(
+            "loginButton"
+        );
+
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+
+    /* ================= SHOW MESSAGE ================= */
+
+    function showMessage(
+        text,
+        type
+    ) {
+
+        message.className =
+            "message " +
+            type;
+
+        message.innerText =
+            text;
+
+    }
+
+
+
+    /* ================= LOGIN ================= */
+
+    loginForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const email =
+                document
+                    .getElementById(
+                        "email"
+                    )
+                    .value
+                    .trim();
+
+
+            const password =
+                document
+                    .getElementById(
+                        "password"
+                    )
+                    .value;
+
+
+            if (!email || !password) {
+
+                showMessage(
+                    "Please enter email and password.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            loginButton.disabled =
+                true;
+
+            loginButton.innerText =
+                "Logging in...";
+
+
+            message.className =
+                "message";
+
+            message.innerText =
+                "";
+
+
+            try {
+
+
+                /* ================= API CALL ================= */
+
+                const response =
+                    await fetch(
+                        "/api/users/login",
+                        {
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    email:
+                                    email,
+
+                                    password:
+                                    password
+
+                                })
+
+                        }
+                    );
+
+
+
+                /* ================= READ RESPONSE ================= */
+
+                const responseText =
+                    await response.text();
+
+
+                console.log(
+                    "LOGIN HTTP STATUS:",
+                    response.status
+                );
+
+
+                console.log(
+                    "LOGIN RAW RESPONSE:",
+                    responseText
+                );
+
+
+                let result = null;
+
+
+                try {
+
+                    result =
+                        responseText
+                            ? JSON.parse(
+                                responseText
+                            )
+                            : null;
+
+                } catch (jsonError) {
+
+                    console.error(
+                        "JSON parsing error:",
+                        jsonError
+                    );
+
+                    throw new Error(
+                        "Server returned an invalid response."
+                    );
+
+                }
+
+
+
+                /* ================= ERROR RESPONSE ================= */
+
+                if (!response.ok) {
+
+                    throw new Error(
+
+                        result?.message ||
+
+                        result?.error ||
+
+                        "Invalid email or password"
+
+                    );
+
+                }
+
+
+
+                /* ================= HANDLE BOTH RESPONSE FORMATS ================= */
+
+                /*
+                 * Format 1:
+                 *
+                 * {
+                 *   success: true,
+                 *   message: "...",
+                 *   data: {
+                 *      token: "...",
+                 *      userId: 2,
+                 *      ...
+                 *   }
+                 * }
+                 *
+                 *
+                 * Format 2:
+                 *
+                 * {
+                 *    token: "...",
+                 *    userId: 2,
+                 *    ...
+                 * }
+                 */
+
+
+                const loginData =
+                    result?.data ||
+                    result;
+
+
+
+                console.log(
+                    "LOGIN DATA:",
+                    loginData
+                );
+
+
+
+                /* ================= FIND TOKEN ================= */
+
+                const token =
+
+                    loginData?.token ||
+
+                    loginData?.jwtToken ||
+
+                    loginData?.accessToken;
+
+
+
+                /* ================= FIND USER ID ================= */
+
+                const userId =
+
+                    loginData?.userId ||
+
+                    loginData?.id;
+
+
+
+                /* ================= FIND USER DETAILS ================= */
+
+                const fullName =
+                    loginData?.fullName ||
+                    loginData?.name ||
+                    "";
+
+
+                const userEmail =
+                    loginData?.email ||
+                    email;
+
+
+                const role =
+                    loginData?.role ||
+                    "CUSTOMER";
+
+
+
+                /* ================= TOKEN VALIDATION ================= */
+
+                if (!token) {
+
+                    console.error(
+                        "TOKEN NOT FOUND IN RESPONSE:",
+                        result
+                    );
+
+                    throw new Error(
+                        "Login succeeded, but JWT token was not received from server."
+                    );
+
+                }
+
+
+
+                /* ================= USER ID VALIDATION ================= */
+
+                if (
+                    userId === null ||
+                    userId === undefined
+                ) {
+
+                    console.error(
+                        "USER ID NOT FOUND:",
+                        result
+                    );
+
+                    throw new Error(
+                        "Login succeeded, but user ID was not received from server."
+                    );
+
+                }
+
+
+
+                /* ================= CLEAR OLD AUTH ================= */
+
+                window.localStorage.removeItem(
+                    "smartFoodToken"
+                );
+
+                window.localStorage.removeItem(
+                    "smartFoodUserId"
+                );
+
+                window.localStorage.removeItem(
+                    "smartFoodUserName"
+                );
+
+                window.localStorage.removeItem(
+                    "smartFoodUserEmail"
+                );
+
+                window.localStorage.removeItem(
+                    "smartFoodUserRole"
+                );
+
+
+
+                /* ================= SAVE AUTH ================= */
+
+                window.localStorage.setItem(
+                    "smartFoodToken",
+                    String(token)
+                );
+
+
+                window.localStorage.setItem(
+                    "smartFoodUserId",
+                    String(userId)
+                );
+
+
+                window.localStorage.setItem(
+                    "smartFoodUserName",
+                    String(fullName)
+                );
+
+
+                window.localStorage.setItem(
+                    "smartFoodUserEmail",
+                    String(userEmail)
+                );
+
+
+                window.localStorage.setItem(
+                    "smartFoodUserRole",
+                    String(role).toUpperCase()
+                );
+
+
+
+                /* ================= VERIFY STORAGE ================= */
+
+                const savedToken =
+                    window.localStorage.getItem(
+                        "smartFoodToken"
+                    );
+
+
+                const savedUserId =
+                    window.localStorage.getItem(
+                        "smartFoodUserId"
+                    );
+
+
+                console.log(
+                    "SAVED TOKEN:",
+                    savedToken
+                );
+
+
+                console.log(
+                    "SAVED USER ID:",
+                    savedUserId
+                );
+
+
+                console.log(
+                    "SAVED ROLE:",
+                    window.localStorage.getItem(
+                        "smartFoodUserRole"
+                    )
+                );
+
+
+
+                if (
+                    !savedToken ||
+                    !savedUserId
+                ) {
+
+                    throw new Error(
+                        "Login data could not be saved in browser storage."
+                    );
+
+                }
+
+
+
+                /* ================= SUCCESS ================= */
+
+                showMessage(
+                    "Login successful! Redirecting...",
+                    "success"
+                );
+
+
+                /* ================= REDIRECT ================= */
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "/home";
+
+                    },
+                    700
+                );
+
+
+            } catch (error) {
+
+
+                console.error(
+                    "Login Error:",
+                    error
+                );
+
+
+                showMessage(
+                    error.message ||
+                    "Something went wrong. Please try again.",
+                    "error"
+                );
+
+
+            } finally {
+
+
+                loginButton.disabled =
+                    false;
+
+
+                loginButton.innerText =
+                    "Login";
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>
